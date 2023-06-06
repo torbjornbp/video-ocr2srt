@@ -1,5 +1,3 @@
-# Video OCR to SRT
-
 This repository contains a Python script that performs Optical Character Recognition (OCR) on video files and generates SRT subtitle files. The script leverages the [EAST text detector](https://arxiv.org/abs/1704.03155v2) model for text detection and the Pytesseract library for OCR.
 
 ## Getting Started
