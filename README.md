@@ -14,7 +14,7 @@ Additionally, you will need to have the EAST text detector model file. You can d
 ## Usage
 
 ```sh
-python script.py -v <path_to_video> -m <path_to_model> [-l <language>] [-f <frame_rate>] [-p]
+python video-ocr2srt -v <path_to_video> -m <path_to_model> [-l <language>] [-f <frame_rate>] [-p]
 ```
 
 Where:
@@ -28,7 +28,7 @@ Where:
 For example, to process a video file named `video.mp4` with the EAST model `east_model.pb`, you would use the following command:
 
 ```sh
-python script.py -v video.mp4 -m east_model.pb
+python video-ocr2srt.py -v video.mp4 -m east_model.pb
 ```
 
 The script will process the video, performing OCR on the specified frames, and will output an SRT subtitle file with the same name as the input video file, in the format `<video_filename>_<language>_<timestamp>.srt`.
