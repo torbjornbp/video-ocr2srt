@@ -10,7 +10,7 @@ Additionally, you will need to have the EAST text detector model file. You can d
 ### Usage
 
 ```sh
-python video-ocr2srt -v <path_to_video> -m <path_to_model> [-l <language>] [-f <frame_rate>] [-p]
+python video-ocr2srt.py -v <path_to_video> -m <path_to_model> [-l <language>] [-f <frame_rate>] [-p]
 ```
 
 Where:
