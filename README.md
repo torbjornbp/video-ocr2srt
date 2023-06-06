@@ -1,10 +1,9 @@
 This repository contains a Python script that performs Optical Character Recognition (OCR) on video files and generates SRT subtitle files. The script leverages the [EAST text detector](https://arxiv.org/abs/1704.03155v2) model for text detection and the Pytesseract library for OCR.
 
-### Things to improve
-- Currently the the OCR is written to a SRT per processed frame. so the same text will be added as multiple subitle objects for every frame rather than the span of the subtitle. Duplicate subtitles can probably be merged somehow. 
-  - I've added an additional version of the script called video-ocr2srt_fuzzy.pym which uses a simple string matching (through fuzzywuzzy) to combine similar subtitle elements into continuous longer elements. It works quite well, but does not utlize the multiple ocr readings to produce better results. Currently it only keeps the first ocr string and extends it for the duration of matched following strings.
-- Reduce amount of false positives
-
+### Current state/things to improve
+- Currently the the OCR is written to a SRT per processed frame. so the same text will be added as multiple subitle objects for every prcessed frame. A better behaviour would be to use a single subtitle element for the duration of similar text. 
+  - I've added an alternative version of the script called video-ocr2srt_fuzzy.pym which uses a simple string matching (through fuzzywuzzy) to combine similar subtitle elements into continuous longer elements. It works quite well, but does not utlize the multiple ocr readings to produce better results. Currently it only keeps the first ocr string and extends it for the duration of matched following strings.
+- Reduce amount of false positives!
 
 ### Prerequisites
 
