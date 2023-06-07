@@ -24,7 +24,7 @@ Where:
 - `<path_to_model>`: This argument is required and it should be the path to the EAST text detector pre-trained model file.
 - `<language>`: This argument is optional and it should be the language model for Pytesseract. The default is `eng` (English). You can provide other language codes supported by Tesseract.
 - `<frame_rate>`: This argument is optional and it specifies the number of frames to skip for processing. By default, this value is `10`, which seems to give an ok compromise between detected text and and processing speed.
-- `-p` or `--preview`: This argument is optional. If included, it enables the preview of the video showing when text is detected.
+- `-p` or `--preview`: This argument is optional. If included, it enables a preview of the video that highligts when text is detected.
 
 To process a video file named `video.mp4` with the EAST model `east_model.pb`, you would use the following command:
 
