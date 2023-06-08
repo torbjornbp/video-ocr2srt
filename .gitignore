@@ -1,4 +1,4 @@
 .DS_Store
-.pb
-.mp4
-.mov
+*.pb
+*.mp4
+*.mov
