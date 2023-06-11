@@ -50,6 +50,7 @@ def main(args):
     videoFilePath = args.video
     modelFilePath = args.model
     pytesseractLanguage = args.language
+    pytesseractBlacklist = args.blacklist
 
     layerNames = [
         "feature_fusion/Conv_7/Sigmoid",
@@ -91,7 +92,7 @@ def main(args):
         boxes = non_max_suppression(np.array(rects), probs=confidences)
 
         if len(boxes) != 0:
-            text = pytesseract.image_to_string(orig, config=f"-l {pytesseractLanguage} --oem 1 --psm 3")
+            text = pytesseract.image_to_string(orig, config=f"-l {pytesseractLanguage} --oem 1 --psm 3 -c tessedit_char_blacklist={pytesseractBlacklist}")
 
             start_time_ms = stream.get(cv2.CAP_PROP_POS_MSEC)
             end_time_ms = start_time_ms + ((args.frame_rate / video_fps) * 1000)
@@ -150,6 +151,7 @@ if __name__ == "__main__":
     parser.add_argument('-l', '--language', help='Language model for Pytesseract', default='eng')
     parser.add_argument('-f', '--frame_rate', help='Number of frames to skip for processing', type=int, default=10)
     parser.add_argument('-p', '--preview', help='Enable preview of the video with bounding boxes', action='store_true')
+    parser.add_argument('-b', '--blacklist', help='blacklist characters to improve OCR result', default='@^¨#$«|{}_ı[]°<>»%=+´`§*')
     args = parser.parse_args()
 
     main(args)

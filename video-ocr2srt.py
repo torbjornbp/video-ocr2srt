@@ -48,6 +48,9 @@ def main(args):
     # Configuring Pytesseract to use the correct language model
     pytesseractLanguage = args.language
 
+    # Configuring Pytesseract to blacklist letters
+    pytesseractBlacklist = args.blacklist
+
     # Layer names from pre-trained EAST text detector model to extract scores and geometry data.
     layerNames = [
         "feature_fusion/Conv_7/Sigmoid",
@@ -98,7 +101,7 @@ def main(args):
 
         # Perform OCR on the original frame, not the resized one.
         if len(boxes) != 0:
-            text = pytesseract.image_to_string(orig, config=f"-l {pytesseractLanguage} --oem 1 --psm 3")
+            text = pytesseract.image_to_string(orig, config=f"-l {pytesseractLanguage} --oem 1 --psm 3 -c tessedit_char_blacklist={pytesseractBlacklist}")
 
             # Define the timing and length for each subtitle object.
             start_time_ms = stream.get(cv2.CAP_PROP_POS_MSEC)
@@ -122,7 +125,7 @@ def main(args):
         # Display a video preview with bounding boxes if the preview is enabled.
         if args.preview:
             cv2.imshow("Preview", orig)
-
+            
         # Update progress bar.
         progress_bar.update(args.frame_rate)
 
@@ -154,6 +157,7 @@ if __name__ == "__main__":
     parser.add_argument('-l', '--language', help='Language model for Pytesseract', default='eng')
     parser.add_argument('-f', '--frame_rate', help='Number of frames to skip for processing', type=int, default=10)
     parser.add_argument('-p', '--preview', help='Enable preview of the video with bounding boxes', action='store_true')
+    parser.add_argument('-b', '--blacklist', help='blacklist characters to improve OCR result', default='@^¨#$«|{}_ı[]°<>»%=+´`§*')
     args = parser.parse_args()
 
     main(args)
