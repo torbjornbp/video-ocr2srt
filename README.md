@@ -27,6 +27,7 @@ Where:
 - `<language>`: This argument is optional and it should be the language model for Pytesseract. The default is `eng` (English). You can provide other language codes supported by Tesseract.
 - `<frame_rate>`: This argument is optional and it specifies the number of frames to skip for processing. By default, this value is `10`, which seems to give an ok compromise between detected text and and processing speed.
 - `-p` or `--preview`: This argument is optional. If included, it enables a preview of the video that highligts when text is detected.
+- `-b` or `--blacklist`: This argument is optional. If included it lets you specify characters to blacklist in OCR. By default these characters are blacklisted: "@^¨#$«»|{} ı[]°<>»%=+´`§*_"
 
 To process a video file named `video.mp4` with the EAST model `east_model.pb`, you would use the following command:
 
