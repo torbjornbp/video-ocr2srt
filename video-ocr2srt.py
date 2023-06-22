@@ -1,5 +1,6 @@
 import argparse
 import srt
+import json
 import pytesseract
 import cv2
 from imutils.object_detection import non_max_suppression
@@ -76,6 +77,9 @@ def main(args):
     # Create an empty list to hold the subtitles.
     subtitles = []
 
+    # Create an empty list to hold the JSON data.
+    json_output = []
+
     # Main loop for processing the video frames.
     while True:
         frame_count += 1
@@ -103,6 +107,11 @@ def main(args):
         if len(boxes) != 0:
             text = pytesseract.image_to_string(orig, config=f"-l {pytesseractLanguage} --oem 1 --psm 3 -c tessedit_char_blacklist={pytesseractBlacklist}")
 
+            # Extract OCR confidence score
+            data = pytesseract.image_to_data(orig, config=f"-l {pytesseractLanguage} --oem 1 --psm 3", output_type=pytesseract.Output.DICT)
+            confidence_scores = [int(conf) for conf in data['conf'] if str(conf).isdigit()]
+            confidence_tesseract = sum(confidence_scores) / len(confidence_scores) if confidence_scores else -1.0
+
             # Define the timing and length for each subtitle object.
             start_time_ms = stream.get(cv2.CAP_PROP_POS_MSEC)
             end_time_ms = start_time_ms + ((args.frame_rate / video_fps) * 1000)
@@ -113,6 +122,20 @@ def main(args):
                                     end=timedelta(milliseconds=end_time_ms),
                                     content=text)
             subtitles.append(subtitle)
+
+            # Convert confidences to float
+            confidences = [float(confidence) for confidence in confidences]
+            # Calculate average confidence score for detection
+            average_detection_confidence = sum(confidences) / len(confidences)
+
+            # Append data to json_output list
+            json_output.append({
+                'frame_number': frame_count,
+                'timecode_ms': start_time_ms,
+                'text_detection_confidence': average_detection_confidence,  # The confidence text being detected
+                'ocr_text': text,
+                'ocr_confidence': confidence_tesseract # The confidence of the OCR string
+            })
 
         # Draw bounding boxes around text areas on the original frame.
         for (startX, startY, endX, endY) in boxes:
@@ -149,6 +172,29 @@ def main(args):
         print("File written successfully")
     except Exception as e:
         print(f"Error while writing to file: {e}")
+
+    # Create a dictionary to hold additional JSON information
+    extra_info = {
+        'filename': videoFilePath,
+        'ocr_language': pytesseractLanguage,
+        'date_processed': datetime.now().strftime("%Y-%m-%d-%H-%M")
+    }
+
+    # Insert the extra_info dictionary at the beginning of the json_output list
+    json_output.insert(0, extra_info)
+
+    # Define the output filename for the JSON file.
+    output_json_filename = videoFilePath.rsplit('.', 1)[0] + "_" + pytesseractLanguage + "_" + datetime.now().strftime(
+        "%Y-%m-%d-%H-%M") + ".json"
+    print(f"Preparing to write JSON to file: {output_json_filename}")
+
+    # Try to write JSON data to the file.
+    try:
+        with open(output_json_filename, 'w') as json_file:
+            json.dump(json_output, json_file, indent=4)
+        print("JSON file written successfully")
+    except Exception as e:
+        print(f"Error while writing JSON file: {e}")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Extract text from video using OCR and generate SRT file')
