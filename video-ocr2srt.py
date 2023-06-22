@@ -8,6 +8,7 @@ import numpy as np
 from datetime import datetime, timedelta
 from tqdm import tqdm
 
+
 def decode_predictions(scores, geometry):
     (numRows, numCols) = scores.shape[2:4]
     rects = []
@@ -40,6 +41,7 @@ def decode_predictions(scores, geometry):
             confidences.append(scoresData[x])
 
     return rects, confidences
+
 
 def main(args):
     # Define paths for the video file and the pre-trained model file.
@@ -132,9 +134,9 @@ def main(args):
             json_output.append({
                 'frame_number': frame_count,
                 'timecode_ms': start_time_ms,
-                'text_detection_confidence': average_detection_confidence, # The confidence text being detected
+                'text_detection_confidence': average_detection_confidence,  # The confidence text being detected
                 'ocr_text': text,
-                'ocr_confidence': confidence_tesseract # The confidence of the OCR string
+                'ocr_confidence': confidence_tesseract  # The confidence of the OCR string
             })
 
         # Draw bounding boxes around text areas on the original frame.
@@ -162,7 +164,8 @@ def main(args):
     cv2.destroyAllWindows()
 
     # Define the output filename for the SRT file.
-    output_srt_filename = videoFilePath.rsplit('.', 1)[0] + "_" + pytesseractLanguage + "_" + datetime.now().strftime("%Y-%m-%d-%H-%M") + ".srt"
+    output_srt_filename = videoFilePath.rsplit('.', 1)[0] + "_" + pytesseractLanguage + "_" + datetime.now().strftime(
+        "%Y-%m-%d-%H-%M") + ".srt"
     print(f"Preparing to write to file: {output_srt_filename}")
 
     # Try to write subtitles to the SRT file.
@@ -176,9 +179,10 @@ def main(args):
     # Create a dictionary to hold additional JSON information
     extra_info = {
         'filename': videoFilePath,
+        'date_processed': datetime.now().strftime("%Y-%m-%d-%H-%M"),
         'ocr_language': pytesseractLanguage,
-        'frame_analysis_interval': args.frame_rate,
-        'date_processed': datetime.now().strftime("%Y-%m-%d-%H-%M")
+        'analysis_frame_interval': args.frame_rate,
+        'character_blacklist': args.blacklist
     }
 
     # Insert the extra_info dictionary at the beginning of the json_output list
@@ -196,6 +200,7 @@ def main(args):
         print("JSON file written successfully")
     except Exception as e:
         print(f"Error while writing JSON file: {e}")
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Extract text from video using OCR and generate SRT file')
