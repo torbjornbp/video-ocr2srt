@@ -177,7 +177,7 @@ def main(args):
     extra_info = {
         'filename': videoFilePath,
         'ocr_language': pytesseractLanguage,
-        'analysis_frame_interval': args.frame_rate,
+        'frame_analysis_interval': args.frame_rate,
         'date_processed': datetime.now().strftime("%Y-%m-%d-%H-%M")
     }
 
