@@ -6,12 +6,12 @@ The script leverages the [EAST text detector](https://arxiv.org/abs/1704.03155v2
 
 ### Current state/things to improve
 - Currently two files are output: 
-  - A JSON file that includes some basic information about the file and OCR strings marked with frame number, timecode (in ms) and confidence scores for text detection and the actual OCR process. 
+  - A JSON file that includes some basic information about the file and parameters used, as well as OCR strings marked with frame number, timecode (in ms) and confidence scores for text detection and the actual OCR process. 
   - A functional SRT file for the processed video file.
     - Currently the OCR strings are written to the SRT per processed frame. The same text will be added as multiple subtitle objects for every processed frame. A better behaviour could be to use a single subtitle element for the duration of similar text. 
     -  I've added an alternative version of the script called video-ocr2srt_fuzzy.py which uses simple string matching (through fuzzywuzzy) to combine similar subtitle elements into continuous longer elements. It works quite well, but does not utlize the multiple ocr readings to produce better results. Currently it only keeps the first ocr string and extends it for the duration of matched following strings.
 - Reduce amount of false positives! 
-- Better perfomance on odd fonts/handwritten text. (evaluate other OCR lbiraries)
+- Better perfomance on odd fonts/handwritten text. (evaluate other OCR libraries)
 
 ### Prerequisites
 
