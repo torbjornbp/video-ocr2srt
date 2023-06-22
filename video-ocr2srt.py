@@ -132,7 +132,7 @@ def main(args):
             json_output.append({
                 'frame_number': frame_count,
                 'timecode_ms': start_time_ms,
-                'text_detection_confidence': average_detection_confidence,  # The confidence text being detected
+                'text_detection_confidence': average_detection_confidence, # The confidence text being detected
                 'ocr_text': text,
                 'ocr_confidence': confidence_tesseract # The confidence of the OCR string
             })
@@ -148,7 +148,7 @@ def main(args):
         # Display a video preview with bounding boxes if the preview is enabled.
         if args.preview:
             cv2.imshow("Preview", orig)
-            
+
         # Update progress bar.
         progress_bar.update(args.frame_rate)
 
@@ -177,6 +177,7 @@ def main(args):
     extra_info = {
         'filename': videoFilePath,
         'ocr_language': pytesseractLanguage,
+        'analysis_frame_interval': args.frame_rate,
         'date_processed': datetime.now().strftime("%Y-%m-%d-%H-%M")
     }
 
