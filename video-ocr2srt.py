@@ -166,7 +166,7 @@ def main(args):
     # Define the output filename for the SRT file.
     output_srt_filename = videoFilePath.rsplit('.', 1)[0] + "_" + pytesseractLanguage + "_" + datetime.now().strftime(
         "%Y-%m-%d-%H-%M") + ".srt"
-    print(f"Preparing to write to file: {output_srt_filename}")
+    print(f"Preparing to write SRT to file: {output_srt_filename}")
 
     # Try to write subtitles to the SRT file.
     try:
