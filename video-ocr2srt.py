@@ -172,9 +172,9 @@ def main(args):
     try:
         with open(output_srt_filename, 'w', encoding='utf-8') as f:
             f.write(srt.compose(subtitles))
-        print("File written successfully")
+        print("SRT file written successfully")
     except Exception as e:
-        print(f"Error while writing to file: {e}")
+        print(f"Error while writing SRT file: {e}")
 
     # Create a dictionary to hold additional JSON information
     extra_info = {
